@@ -1,19 +1,23 @@
 FROM python:3.11-slim
 
-WORKDIR /app
+# Install git to clone the repository
+RUN apt-get update && apt-get install -y git
 
-# Create a virtual environment inside /app/venv
-RUN python -m venv /app/venv
+# Clone the latest FastAPI project from GitHub
+RUN git clone https://github.com/rdrishabh38/fastapi-demo.git /fastapi-demo
 
-# Upgrade pip inside the virtual environment
-RUN /app/venv/bin/pip install --upgrade pip
+# Set the working directory to the project root
+WORKDIR /fastapi-demo/app
 
-# Copy and install dependencies inside the virtual environment
-COPY requirements.txt .
-RUN /app/venv/bin/pip install --no-cache-dir -r requirements.txt
+# Create a virtual environment inside the project
+RUN python -m venv venv
+RUN venv/bin/pip install --upgrade pip
 
-# Copy application files
-COPY . .
+# Install dependencies inside the virtual environment
+RUN venv/bin/pip install --no-cache-dir -r requirements.txt
 
-# Use virtual environment's Python & Uvicorn to start FastAPI
-CMD ["/bin/sh", "-c", "/app/venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000"]
+# Expose FastAPI's default port
+EXPOSE 8000
+
+# Run FastAPI inside the virtual environment
+CMD ["/bin/sh", "-c", "./venv/bin/uvicorn main:app --host 0.0.0.0 --port 8000"]
