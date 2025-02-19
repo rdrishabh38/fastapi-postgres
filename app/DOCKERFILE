@@ -1,0 +1,19 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Create a virtual environment inside /app/venv
+RUN python -m venv /app/venv
+
+# Upgrade pip inside the virtual environment
+RUN /app/venv/bin/pip install --upgrade pip
+
+# Copy and install dependencies inside the virtual environment
+COPY requirements.txt .
+RUN /app/venv/bin/pip install --no-cache-dir -r requirements.txt
+
+# Copy application files
+COPY . .
+
+# Use virtual environment's Python & Uvicorn to start FastAPI
+CMD ["/bin/sh", "-c", "/app/venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000"]

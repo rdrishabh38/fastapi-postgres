@@ -1,0 +1,53 @@
+erDiagram
+    USERS ||--o{ RIDES : "requests"
+    DRIVERS ||--o{ RIDES : "fulfills"
+    DRIVERS ||--o{ CARS : "owns"
+
+    USERS {
+        integer user_id PK
+        varchar email UK
+        varchar hashed_password
+        varchar name
+        varchar phone_number UK
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    DRIVERS {
+        integer driver_id PK
+        varchar email UK
+        varchar hashed_password
+        varchar name
+        varchar phone_number UK
+        varchar driver_license UK
+        boolean is_available
+        numeric rating
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    CARS {
+        integer car_id PK
+        integer driver_id FK
+        varchar make
+        varchar model
+        integer year
+        varchar license_plate UK
+        varchar color
+        timestamp created_at
+    }
+
+    RIDES {
+        integer ride_id PK
+        integer user_id FK
+        integer driver_id FK
+        geography pickup_location
+        geography dropoff_location
+        varchar status
+        numeric fare
+        numeric distance
+        timestamp started_at
+        timestamp completed_at
+        timestamp created_at
+        timestamp updated_at
+    }
