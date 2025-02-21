@@ -32,9 +32,6 @@ target_metadata = Base.metadata
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
-# Set up Alembic to use the correct database URL
-config.set_main_option("sqlalchemy.url")
-
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
