@@ -7,7 +7,6 @@ from alembic import context
 
 # Import the SQLAlchemy Base
 from app.models.base import Base  # Import your models' base class
-from app.database import DATABASE_URL  # Your database connection
 from app.models.user import User
 from app.models.driver import Driver
 from app.models.car import Car
@@ -34,7 +33,7 @@ target_metadata = Base.metadata
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 # Set up Alembic to use the correct database URL
-config.set_main_option("sqlalchemy.url", DATABASE_URL)
+config.set_main_option("sqlalchemy.url")
 
 
 def run_migrations_offline() -> None:
