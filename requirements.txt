@@ -15,7 +15,6 @@ Mako==1.3.9
 MarkupSafe==3.0.2
 packaging==24.2
 passlib==1.7.4
-podman-compose==1.3.0
 psycopg2-binary==2.9.10
 pydantic==2.10.6
 pydantic_core==2.27.2
