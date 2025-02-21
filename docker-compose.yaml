@@ -22,7 +22,7 @@ services:
     depends_on:
       - db
     environment:
-      - DATABASE_URL=postgresql://user:password@db:5432/mydb
+      - DATABASE_URL=postgresql+psycopg2://user:password@db:5432/mydb
       - PYTHONPATH=/app
     networks:
       - fastapi-network
