@@ -1,7 +1,7 @@
 FROM python:3.11-slim
 
 # Install git to clone the repository
-RUN apt-get update && apt-get install -y git netcat
+RUN apt-get update && apt-get install -y git netcat-openbsd
 
 # Clone the latest FastAPI project from GitHub
 RUN git clone https://github.com/rdrishabh38/fastapi-postgres.git /fastapi-postgres
