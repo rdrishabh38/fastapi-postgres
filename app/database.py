@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models.base import Base
+from app.models.base import Base
+
 
 # Define the database URL (Update with actual credentials)
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
