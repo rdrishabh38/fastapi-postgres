@@ -8,10 +8,11 @@ from app.models.base import Base
 
 class Ride(Base):
     __tablename__ = "rides"
+    __table_args__ = {'schema': 'ride_demo'}
 
     ride_id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.user_id"), nullable=False)
-    driver_id = Column(Integer, ForeignKey("drivers.driver_id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("ride_demo.users.user_id"), nullable=False)
+    driver_id = Column(Integer, ForeignKey("ride_demo.drivers.driver_id"), nullable=False)
     pickup_location = Column(Geography(geometry_type="POINT", srid=4326), nullable=False)
     dropoff_location = Column(Geography(geometry_type="POINT", srid=4326), nullable=False)
     status = Column(String, nullable=False)

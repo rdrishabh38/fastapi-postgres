@@ -8,6 +8,7 @@ from sqlalchemy.sql import func
 
 class Driver(Base):
     __tablename__ = "drivers"
+    __table_args__ = {'schema': 'ride_demo'}
 
     driver_id = Column(Integer, primary_key=True, index=True)
     email = Column(String, unique=True, nullable=False)

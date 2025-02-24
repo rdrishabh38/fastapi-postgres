@@ -8,9 +8,10 @@ from sqlalchemy.sql import func
 
 class Car(Base):
     __tablename__ = "cars"
+    __table_args__ = {'schema': 'ride_demo'}
 
     car_id = Column(Integer, primary_key=True, index=True)
-    driver_id = Column(Integer, ForeignKey("drivers.driver_id"), nullable=False)
+    driver_id = Column(Integer, ForeignKey("ride_demo.drivers.driver_id"), nullable=False)
     make = Column(String, nullable=False)
     model = Column(String, nullable=False)
     year = Column(Integer, nullable=False)
