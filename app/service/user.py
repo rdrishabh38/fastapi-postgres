@@ -3,7 +3,7 @@ from sqlalchemy.future import select
 from fastapi import HTTPException
 from passlib.context import CryptContext
 
-from models import User
+from app.models.user import User
 from schemas.user import UserCreate
 
 # Setup for password hashing
