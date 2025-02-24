@@ -12,10 +12,10 @@ async def register_user_route(user_data: UserCreate, db: AsyncSession = Depends(
     # Delegate the business logic to the service layer
     return await register_user(user_data, db)
 
-@router.get("/users/by-email", response_model=UserResponse)
+@router.get("/by-email", response_model=UserResponse)
 async def get_user_by_email_endpoint(email: str = Query(...), db: AsyncSession = Depends(get_db)):
     return await get_user_by_email(email, db)
 
-@router.get("/users/by-phone", response_model=UserResponse)
+@router.get("/by-phone", response_model=UserResponse)
 async def get_user_by_phone_endpoint(phone_number: str = Query(...), db: AsyncSession = Depends(get_db)):
     return await get_user_by_phone(phone_number, db)
