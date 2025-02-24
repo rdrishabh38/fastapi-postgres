@@ -9,6 +9,7 @@ from typing import Sequence, Union
 
 from alembic import op
 import sqlalchemy as sa
+from sqlalchemy import text
 import geoalchemy2
 
 
@@ -87,8 +88,10 @@ def upgrade() -> None:
     sa.PrimaryKeyConstraint('ride_id'),
     schema='ride_demo'
     )
-    op.create_index('idx_rides_dropoff_location', 'rides', ['dropoff_location'], unique=False, schema='ride_demo', postgresql_using='gist')
-    op.create_index('idx_rides_pickup_location', 'rides', ['pickup_location'], unique=False, schema='ride_demo', postgresql_using='gist')
+    # Use raw SQL to prevent duplicate index errors
+    op.execute(text("CREATE INDEX IF NOT EXISTS idx_rides_dropoff_location ON rides USING gist (dropoff_location);"))
+    op.execute(text("CREATE INDEX IF NOT EXISTS idx_rides_pickup_location ON rides USING gist (pickup_location);"))
+
     op.create_index(op.f('ix_ride_demo_rides_ride_id'), 'rides', ['ride_id'], unique=False, schema='ride_demo')
     op.drop_table('spatial_ref_sys')
     # ### end Alembic commands ###
