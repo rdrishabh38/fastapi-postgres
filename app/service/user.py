@@ -37,3 +37,18 @@ async def register_user(user_data: UserCreate, db: AsyncSession):
     await db.refresh(new_user)
 
     return new_user
+
+
+async def get_user_by_email(email: str, db: AsyncSession) -> User:
+    result = await db.execute(select(User).where(User.email == email))
+    user = result.scalars().first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user
+
+async def get_user_by_phone(phone_number: str, db: AsyncSession) -> User:
+    result = await db.execute(select(User).where(User.phone_number == phone_number))
+    user = result.scalars().first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user
