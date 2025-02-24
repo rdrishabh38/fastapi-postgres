@@ -1,40 +1,12 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from database import get_db
-from models.user import User
 from schemas.user import UserCreate, UserResponse
-from passlib.context import CryptContext
-from sqlalchemy.future import select
+from service.user import register_user as register_user_service
 
 router = APIRouter()
 
-# Password hashing setup
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-
-def hash_password(password: str) -> str:
-    return pwd_context.hash(password)
-
-
 @router.post("/register", response_model=UserResponse)
-async def register_user(user_data: UserCreate, db: AsyncSession = Depends(get_db)):
-    # Check if email or phone number already exists
-    result = await db.execute(select(User).where((User.email == user_data.email) | (User.phone_number == user_data.phone_number)))
-    existing_user = result.scalars().first()
-
-    if existing_user:
-        raise HTTPException(status_code=400, detail="Email or phone number already registered")
-
-    # Create new user
-    new_user = User(
-        email=user_data.email,
-        hashed_password=hash_password(user_data.password),
-        name=user_data.name,
-        phone_number=user_data.phone_number
-    )
-
-    db.add(new_user)
-    await db.commit()
-    await db.refresh(new_user)
-
-    return new_user
+async def register_user_route(user_data: UserCreate, db: AsyncSession = Depends(get_db)):
+    # Delegate the business logic to the service layer
+    return await register_user_service(user_data, db)

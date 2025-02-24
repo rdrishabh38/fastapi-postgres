@@ -28,4 +28,4 @@ RUN chmod +x /fastapi-postgres/entrypoint.sh
 ENTRYPOINT ["/fastapi-postgres/entrypoint.sh"]
 
 # Run FastAPI using uvicorn (which will now be found via the updated PATH)
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+#CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
