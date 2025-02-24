@@ -5,7 +5,7 @@ from models.base import Base
 # Define the database URL (Update with actual credentials)
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 
-DATABASE_URL = "postgresql+asyncpg://user:password@localhost:5432/mydb"
+DATABASE_URL = "postgresql+asyncpg://user:password@db:5432/mydb"
 # Create an async engine
 engine = create_async_engine(DATABASE_URL, echo=True)
 
