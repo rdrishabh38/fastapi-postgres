@@ -6,6 +6,7 @@ from fastapi import HTTPException
 from app.models.ride import Ride
 from app.models.driver import Driver
 from app.schemas.ride import RideCreate
+from datetime import datetime
 
 
 def parse_point(point_str: str):
@@ -51,23 +52,26 @@ async def book_ride(ride_data: RideCreate, db: AsyncSession) -> Ride:
     # Select an available driver
     driver = await get_available_driver(db)
 
-    # Optionally mark the driver as unavailable
+    # Mark the driver as unavailable
     driver.is_available = False
     db.add(driver)
 
-    # Calculate the distance based on pickup and dropoff locations
+    # Parse the pickup and dropoff coordinates
     try:
         lon1, lat1 = parse_point(ride_data.pickup_location)
         lon2, lat2 = parse_point(ride_data.dropoff_location)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+    # Calculate the distance using the haversine formula
     computed_distance = haversine(lon1, lat1, lon2, lat2)
 
     # Generate a random pricing multiplier between 1 and 5
-    random_pricing = random.uniform(1, 5)
-    computed_fare = computed_distance * random_pricing
+    random_pricing_surge = random.uniform(1, 5)
+    # Calculate the fare based on distance and random multiplier
+    computed_fare = computed_distance * random_pricing_surge
 
+    # Create the ride record, setting started_at to current timestamp
     new_ride = Ride(
         user_id=ride_data.user_id,
         driver_id=driver.driver_id,
@@ -75,9 +79,33 @@ async def book_ride(ride_data: RideCreate, db: AsyncSession) -> Ride:
         dropoff_location=ride_data.dropoff_location,
         fare=computed_fare,
         distance=computed_distance,
-        status="booked"
+        status="booked",
+        started_at=datetime.utcnow(),
+        created_at=datetime.utcnow()
     )
     db.add(new_ride)
     await db.commit()
     await db.refresh(new_ride)
     return new_ride
+
+
+async def complete_ride(ride_id: int, db: AsyncSession) -> Ride:
+    # Retrieve the ride by ID
+    result = await db.execute(select(Ride).where(Ride.ride_id == ride_id))
+    ride = result.scalars().first()
+    if not ride:
+        raise HTTPException(status_code=404, detail="Ride not found")
+
+    # Update the ride status and set completed_at
+    ride.status = "completed"
+    ride.completed_at = datetime.utcnow()
+
+    # Mark the associated driver as available
+    if ride.driver:
+        ride.driver.is_available = True
+        db.add(ride.driver)
+
+    db.add(ride)
+    await db.commit()
+    await db.refresh(ride)
+    return ride
