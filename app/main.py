@@ -3,6 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import text
 from app.database import get_db
 
 
@@ -21,14 +22,12 @@ Base = declarative_base()
 # Test endpoint
 @app.get("/health", tags=["health"])
 async def health_check(db: AsyncSession = Depends(get_db)):
-    # Check database connectivity
     try:
-        result = await db.execute("SELECT 1")
+        result = await db.execute(text("SELECT 1"))
         if result.scalar() != 1:
             raise HTTPException(status_code=500, detail="Database check failed")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database connection error: {e}")
-
     return {"status": "ok"}
 
 # Include user registration routes
