@@ -16,7 +16,7 @@ async def get_car_by_id_endpoint(car_id: int, db: AsyncSession = Depends(get_db)
     return await get_car_by_id(car_id, db)
 
 @router.get("/by-license/{license_plate}", response_model=CarResponse)
-async def get_car_by_license_endpoint(license_plate: str = Query(...), db: AsyncSession = Depends(get_db)):
+async def get_car_by_license_endpoint(license_plate: str, db: AsyncSession = Depends(get_db)):
     return await get_car_by_license(license_plate, db)
 
 @router.get("/by-driver/{driver_id}", response_model=List[CarResponse])
