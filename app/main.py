@@ -36,4 +36,4 @@ async def health_check(db: AsyncSession = Depends(get_db)):
 app.include_router(user_router, prefix="/users", tags=["Users"])
 app.include_router(driver_router, prefix="/drivers", tags=["Drivers"])
 app.include_router(car_router, prefix="/cars", tags=["Cars"])
-app.include_router(prefix="/rides", tags=["Rides"])
+app.include_router(ride_router, prefix="/rides", tags=["Rides"])
