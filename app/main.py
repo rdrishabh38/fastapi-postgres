@@ -9,6 +9,7 @@ from app.database import get_db
 
 from routes.user import router as user_router
 from routes.driver import router as driver_router
+from routes.car import router as car_router
 
 
 app = FastAPI()
@@ -33,3 +34,4 @@ async def health_check(db: AsyncSession = Depends(get_db)):
 # Include user registration routes
 app.include_router(user_router, prefix="/users", tags=["Users"])
 app.include_router(driver_router, prefix="/drivers", tags=["Drivers"])
+app.include_router(car_router)
