@@ -34,4 +34,4 @@ async def health_check(db: AsyncSession = Depends(get_db)):
 # Include user registration routes
 app.include_router(user_router, prefix="/users", tags=["Users"])
 app.include_router(driver_router, prefix="/drivers", tags=["Drivers"])
-app.include_router(car_router, prefix="/cars", tags=["Drivers"])
+app.include_router(car_router, prefix="/cars", tags=["Cars"])
