@@ -96,14 +96,16 @@ async def complete_ride(ride_id: int, db: AsyncSession) -> Ride:
     if not ride:
         raise HTTPException(status_code=404, detail="Ride not found")
 
-    # Update the ride status and set completed_at
+    # Update the ride's status and set completed_at timestamp
     ride.status = "completed"
     ride.completed_at = datetime.utcnow()
 
-    # Mark the associated driver as available
-    if ride.driver:
-        ride.driver.is_available = True
-        db.add(ride.driver)
+    # Instead of using lazy loading (ride.driver),
+    # explicitly fetch the driver using the driver's ID.
+    driver = await db.get(Driver, ride.driver_id)
+    if driver:
+        driver.is_available = True
+        db.add(driver)
 
     db.add(ride)
     await db.commit()

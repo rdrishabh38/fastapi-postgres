@@ -10,6 +10,6 @@ router = APIRouter()
 async def book_ride_endpoint(ride_data: RideCreate, db: AsyncSession = Depends(get_db)):
     return await book_ride(ride_data, db)
 
-@router.post("/rides/{ride_id}/complete", response_model=RideResponse)
+@router.post("/{ride_id}/complete", response_model=RideResponse)
 async def complete_ride_endpoint(ride_id: int, db: AsyncSession = Depends(get_db)):
     return await complete_ride(ride_id, db)
