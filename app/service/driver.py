@@ -36,3 +36,17 @@ async def register_driver(driver_data: DriverCreate, db: AsyncSession) -> Driver
     await db.commit()
     await db.refresh(new_driver)
     return new_driver
+
+async def get_driver_by_email(email: str, db: AsyncSession) -> Driver:
+    result = await db.execute(select(Driver).where(Driver.email == email))
+    driver = result.scalars().first()
+    if not driver:
+        raise HTTPException(status_code=404, detail="Driver not found")
+    return driver
+
+async def get_driver_by_phone(phone_number: str, db: AsyncSession) -> Driver:
+    result = await db.execute(select(Driver).where(Driver.phone_number == phone_number))
+    driver = result.scalars().first()
+    if not driver:
+        raise HTTPException(status_code=404, detail="Driver not found")
+    return driver
