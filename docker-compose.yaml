@@ -26,6 +26,7 @@ services:
       - ./app:/app
     depends_on:
       - db
+      - fluentd
     environment:
       - DATABASE_URL=postgresql+psycopg2://user:password@db:5432/mydb
       - PYTHONPATH=/app
@@ -50,6 +51,11 @@ services:
     ports:
       - "24224:24224"
       - "24224:24224/udp"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:24224" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
 volumes:
   pgdata:
