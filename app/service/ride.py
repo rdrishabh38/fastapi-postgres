@@ -64,12 +64,12 @@ async def book_ride(ride_data: RideCreate, db: AsyncSession) -> Ride:
         raise HTTPException(status_code=400, detail=str(e))
 
     # Calculate the distance using the haversine formula
-    computed_distance = haversine(lon1, lat1, lon2, lat2)
+    computed_distance = round(haversine(lon1, lat1, lon2, lat2), 2)
 
     # Generate a random pricing multiplier between 1 and 5
     random_pricing_surge = random.uniform(1, 5)
     # Calculate the fare based on distance and random multiplier
-    computed_fare = computed_distance * random_pricing_surge
+    computed_fare = round(computed_distance * random_pricing_surge, 2)
 
     # Create the ride record, setting started_at to current timestamp
     new_ride = Ride(
