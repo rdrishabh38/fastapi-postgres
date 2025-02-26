@@ -22,7 +22,7 @@ services:
     logging:
       driver: "fluentd"
       options:
-        fluentd-address: "fluentd:24224"
+        fluentd-address: "172.28.0.2:24224"
         tag: "docker.db"
 
   app:
@@ -45,7 +45,7 @@ services:
     logging:
       driver: "fluentd"
       options:
-        fluentd-address: "fluentd:24224"
+        fluentd-address: "172.28.0.2:24224"
         tag: "docker.app"
 
   fluentd:
