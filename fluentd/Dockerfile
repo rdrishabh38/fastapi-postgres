@@ -3,7 +3,7 @@ FROM fluent/fluentd:v1.12.0-debian-1.0
 USER root
 
 # Install faraday-net_http version 3.0.2 first
-RUN gem install faraday-net_http -v 3.0.2
+RUN gem install faraday -v 2.8.1
 
 # Remove any default fluent-plugin-elasticsearch if present.
 RUN gem uninstall fluent-plugin-elasticsearch -a -x || true
