@@ -11,11 +11,14 @@ services:
       - pgdata:/var/lib/postgresql/data
       - ./db/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql  # Initialize DB
     networks:
-      - fastapi-network
+      - fastapi-network:
+          ipv4_address: 172.28.0.3
     ports:
       - "5432:5432"
     depends_on:
       - fluentd
+    extra_hosts:
+      - "fluentd:172.28.0.2"
     logging:
       driver: "fluentd"
       options:
@@ -33,9 +36,12 @@ services:
       - DATABASE_URL=postgresql+psycopg2://user:password@db:5432/mydb
       - PYTHONPATH=/app
     networks:
-      - fastapi-network
+      - fastapi-network:
+        ipv4_address: 172.28.0.4
     ports:
       - "8000:8000"
+    extra_hosts:
+      - "fluentd:172.28.0.2"
     logging:
       driver: "fluentd"
       options:
@@ -49,10 +55,12 @@ services:
     volumes:
       - ./fluentd/conf:/fluentd/etc
     networks:
-      - fastapi-network
+      - fastapi-network:
+        ipv4_address: 172.28.0.2
     ports:
       - "24224:24224"
       - "24224:24224/udp"
+      - "24220:24220"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:24220/api/plugins.json" ]
       interval: 30s
@@ -65,3 +73,6 @@ volumes:
 networks:
   fastapi-network:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
