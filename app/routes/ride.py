@@ -1,8 +1,9 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_db
 from app.service.ride import book_ride, complete_ride
 from app.schemas.ride import RideCreate, RideResponse
+from loguru import logger
 
 router = APIRouter()
 

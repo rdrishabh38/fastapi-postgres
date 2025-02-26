@@ -14,6 +14,11 @@ services:
       - fastapi-network
     ports:
       - "5432:5432"
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: "fluentd:24224"
+        tag: "docker.db"
 
   app:
     build: ./app
@@ -28,6 +33,23 @@ services:
       - fastapi-network
     ports:
       - "8000:8000"
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: "fluentd:24224"
+        tag: "docker.app"
+
+  fluentd:
+    image: fluent/fluentd:v1.14-debian-1.0
+    environment:
+      - FLUENTD_CONF=fluent.conf
+    volumes:
+      - ./fluentd/conf:/fluentd/etc
+    networks:
+      - fastapi-network
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
 
 volumes:
   pgdata:

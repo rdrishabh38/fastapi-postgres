@@ -1,10 +1,10 @@
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_db
 from app.service.driver import register_driver as register_driver_service
 from app.schemas.driver import DriverCreate, DriverResponse
 from app.service.driver import get_driver_by_email, get_driver_by_phone
-
+from loguru import logger
 
 router = APIRouter()
 
