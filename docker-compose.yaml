@@ -40,7 +40,7 @@ services:
         tag: "docker.app"
 
   fluentd:
-    image: fluent/fluentd:v1.14-debian-1.0
+    image: fluent/fluentd:v1.18-debian-1
     environment:
       - FLUENTD_CONF=fluent.conf
     volumes:
