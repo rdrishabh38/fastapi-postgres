@@ -70,7 +70,7 @@ services:
       retries: 3
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.17.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.16.4
     environment:
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
@@ -88,7 +88,7 @@ services:
       retries: 3
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:8.17.1
+    image: docker.elastic.co/kibana/kibana:8.16.4
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
       - xpack.security.enabled=false
