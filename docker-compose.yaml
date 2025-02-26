@@ -64,13 +64,13 @@ services:
       - "24224:24224/udp"
       - "24220:24220"
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:24220/api/plugins.json" ]
+      test: ["CMD", "curl", "-f", "http://localhost:24220/api/plugins.json"]
       interval: 30s
       timeout: 10s
       retries: 3
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.17.2
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
     environment:
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
@@ -82,15 +82,15 @@ services:
     ports:
       - "9200:9200"
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:9200" ]
+      test: ["CMD", "curl", "-f", "http://localhost:9200"]
       interval: 30s
       timeout: 10s
       retries: 3
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:8.17.2
+    image: docker.elastic.co/kibana/kibana:7.17.0
     environment:
-      - ELASTICSEARCH_HOSTS=http://172.28.0.5:9200
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
       - xpack.security.enabled=false
     depends_on:
       - elasticsearch
