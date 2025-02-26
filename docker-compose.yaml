@@ -88,7 +88,10 @@ services:
       retries: 3
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:7.17.0
+    image: docker.elastic.co/kibana/kibana:8.17.2
+    environment:
+      - ELASTICSEARCH_HOSTS=http://172.28.0.5:9200
+      - xpack.security.enabled=false
     depends_on:
       - elasticsearch
     networks:
