@@ -49,7 +49,9 @@ services:
         tag: "docker.app"
 
   fluentd:
-    image: fluent/fluentd:v1.18-debian-1
+    build:
+      context: ./fluentd
+      dockerfile: Dockerfile
     environment:
       - FLUENTD_CONF=fluent.conf
     volumes:
@@ -62,7 +64,7 @@ services:
       - "24224:24224/udp"
       - "24220:24220"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:24220/api/plugins.json"]
+      test: [ "CMD", "curl", "-f", "http://localhost:24220/api/plugins.json" ]
       interval: 30s
       timeout: 10s
       retries: 3

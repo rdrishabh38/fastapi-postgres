@@ -1,6 +1,9 @@
 #!/bin/sh
 set -e
 
+echo "building containers"
+docker compose build --no-cache
+
 echo "Starting Fluentd container..."
 docker compose up -d fluentd
 
