@@ -1,0 +1,6 @@
+{
+  "data_view": {
+    "title": "docker-logs-*",
+    "timeFieldName": "@timestamp"
+  }
+}
