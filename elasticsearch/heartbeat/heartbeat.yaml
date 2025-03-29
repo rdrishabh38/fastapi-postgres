@@ -1,0 +1,9 @@
+heartbeat.monitors:
+  - type: http
+    name: "API Health Check"
+    schedule: "@every 5s"
+    urls: ["http://app:8000/health"]
+    check.response.status: 200
+
+output.elasticsearch:
+  hosts: ["elasticsearch:9200"]

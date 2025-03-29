@@ -108,6 +108,17 @@ services:
     command:
       - "/create-kibana-data-view.sh & /usr/local/bin/kibana-docker"  # Run script alongside Kibana
 
+  heartbeat:
+    image: docker.elastic.co/beats/heartbeat:8.16.4
+    user: root
+    volumes:
+      - ./elasticsearch/heartbeat/heartbeat.yml:/usr/share/heartbeat/heartbeat.yml
+    networks:
+      fastapi-network:
+        ipv4_address: 172.28.0.7
+    depends_on:
+      - elasticsearch
+
 volumes:
   pgdata:
 
